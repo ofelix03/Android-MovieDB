@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/filter_by_genre" android:title="Filter By Genre" android:enabled="false"/>
+    <item android:id="@+id/scifi" android:title="Sci-fi"/>
+    <item android:id="@+id/comedy" android:title="Comedy"/>
+    <item android:id="@+id/romance" android:title="Romance"/>
+    <item android:id="@+id/action" android:title="Action"/>
+    <item android:id="@+id/drama" android:title="Drama"/>
+    <item android:id="@+id/documentary" android:title="Documentary"/>
+</menu>
