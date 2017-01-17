@@ -11,16 +11,18 @@ public class Movie {
     private String title;
     private String rating;
     private String releaseDate;
+    private int id;
 
     public Movie() {
 
     }
 
-    public Movie(String image, String title, String rating, String releaseDate) {
+    public Movie(int id, String image, String title, String rating, String releaseDate) {
         this.image = IMAGE_URL_PREFIX +  image;
         this.title = title;
         this.rating = rating;
         this.releaseDate = releaseDate;
+        this.id = id;
     }
 
     public void setImage(String image) {
@@ -53,5 +55,13 @@ public class Movie {
 
     public String getReleaseDate() {
         return releaseDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

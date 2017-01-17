@@ -18,6 +18,7 @@ public class Util {
     private static SharedPreferences genreSharedPreference = null;
     private static Util instance = null;
 
+
     public static String GENRE_LIST_KEY = "genre_list";
     private Util() {
         instance = new Util();

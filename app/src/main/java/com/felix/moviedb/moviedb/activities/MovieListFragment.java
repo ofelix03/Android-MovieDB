@@ -149,6 +149,7 @@ public class MovieListFragment extends Fragment implements GenreListDialogFragme
 
                     // Wrap movies in a Movie object
                     String image, title, rating, releaseDate;
+                    int id;
                     JSONObject movie;
 
                     for(int i = 0; i < results.length(); i++) {
@@ -156,9 +157,11 @@ public class MovieListFragment extends Fragment implements GenreListDialogFragme
                         image = movie.getString("backdrop_path");
                         title = movie.getString("title");
                         rating = movie.getString("vote_average");
-                        releaseDate = movie.getString(("release_date"));
+                        releaseDate = movie.getString("release_date");
+                        id = movie.getInt("id");
 
-                        movies.add(new Movie(image, title, rating, releaseDate));
+
+                        movies.add(new Movie(id, image, title, rating, releaseDate));
                     }
 
                     Log.i("page", String.valueOf(page));
@@ -200,6 +203,7 @@ public class MovieListFragment extends Fragment implements GenreListDialogFragme
 
                     // Wrap movies in a Movie object
                     String image, title, rating, releaseDate;
+                    int id;
                     JSONObject movie;
 
                     for(int i = 0; i < results.length(); i++) {
@@ -208,8 +212,10 @@ public class MovieListFragment extends Fragment implements GenreListDialogFragme
                         title = movie.getString("title");
                         rating = movie.getString("vote_average");
                         releaseDate = movie.getString(("release_date"));
+                        id = movie.getInt("id");
 
-                        newMovies.add(new Movie(image, title, rating, releaseDate));
+
+                        newMovies.add(new Movie(id, image, title, rating, releaseDate));
                     }
 
                     Log.i("page", String.valueOf(page));
@@ -304,6 +310,7 @@ public class MovieListFragment extends Fragment implements GenreListDialogFragme
 
                     // Wrap movies in a Movie object
                     String image, title, rating, releaseDate;
+                    int id;
                     JSONObject movie;
 
                     for(int i = 0; i < results.length(); i++) {
@@ -312,8 +319,9 @@ public class MovieListFragment extends Fragment implements GenreListDialogFragme
                         title = movie.getString("title");
                         rating = movie.getString("vote_average");
                         releaseDate = movie.getString(("release_date"));
+                        id = movie.getInt("id");
 
-                        movies.add(new Movie(image, title, rating, releaseDate));
+                        movies.add(new Movie(id, image, title, rating, releaseDate));
                     }
 
                     Log.i("hmm movies results", results.toString());

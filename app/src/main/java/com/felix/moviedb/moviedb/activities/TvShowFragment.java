@@ -1,6 +1,7 @@
 package com.felix.moviedb.moviedb.activities;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -18,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.felix.moviedb.moviedb.R;
 import com.felix.moviedb.moviedb.adapters.MovieRecyclerViewAdapter;
+import com.felix.moviedb.moviedb.adapters.TvShowRecyclerViewAdapter;
 import com.felix.moviedb.moviedb.models.Movie;
 import com.felix.moviedb.moviedb.services.VolleyFactory;
 
@@ -34,6 +37,17 @@ public class TvShowFragment extends Fragment {
 
     private String TV_SHOWS_URL = "https://api.themoviedb.org/3/tv/popular?api_key=f54dad4d1c97e5e9713189d86d100bf7&language=en-US&page=1";
     private int currentPage = 1;
+
+    private TvShowRecyclerViewAdapter.MovieViewHolderCallbacks  movieViewHolderCallbacks = new TvShowRecyclerViewAdapter.MovieViewHolderCallbacks() {
+        @Override
+        public void onImageClick(View view, int tvId) {
+            Log.i("felixclicked", "felix clicked");
+            Log.i("tvID", String.valueOf(tvId));
+            Intent tvShowDetailsIntent = new Intent(getActivity(), TvShowDetailsActivity.class);
+            tvShowDetailsIntent.putExtra("tvId", tvId);
+            startActivity(tvShowDetailsIntent);
+        }
+    };
 
     public TvShowFragment() {
         // Required empty public constructor
@@ -90,6 +104,7 @@ public class TvShowFragment extends Fragment {
 
                     // Wrap movies in a Movie object
                     String image, title, rating, releaseDate;
+                    int id;
                     JSONObject movie;
 
                     for(int i = 0; i < results.length(); i++) {
@@ -98,8 +113,9 @@ public class TvShowFragment extends Fragment {
                         title = movie.getString("name");
                         rating = movie.getString("vote_average");
                         releaseDate = movie.getString(("first_air_date"));
+                        id = movie.getInt("id");
 
-                        tvShows.add(new Movie(image, title, rating, releaseDate));
+                        tvShows.add(new Movie(id, image, title, rating, releaseDate));
                     }
 
                     Log.i("tvshows", tvShows.toString());
@@ -110,7 +126,8 @@ public class TvShowFragment extends Fragment {
                     e.printStackTrace();
                 }
 
-                MovieRecyclerViewAdapter tvShowAdapter= new MovieRecyclerViewAdapter(getContext(), tvShows);
+                TvShowRecyclerViewAdapter tvShowAdapter= new TvShowRecyclerViewAdapter(getContext(), tvShows);
+                tvShowAdapter.setMovieViewHolderCallbacks(movieViewHolderCallbacks);
                 tvShowRecyclerView.setAdapter(tvShowAdapter);
                 tvShowAdapter.notifyDataSetChanged();
 
@@ -124,5 +141,7 @@ public class TvShowFragment extends Fragment {
 
         VolleyFactory.getInstance(getActivity()).getRequestQueue().add(tvShowsRequest);
     }
+
+
 
 }

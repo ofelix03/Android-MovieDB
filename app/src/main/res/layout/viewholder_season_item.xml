@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    android:layout_height="150dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/cardview_default_radius"
+    app:cardElevation="@dimen/cardview_default_elevation"
+    android:layout_margin="4dp"
+    app:cardBackgroundColor="@color/cardview_dark_background"
+    >
+    <FrameLayout android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/season_poster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"/>
+
+        <TextView
+            android:id="@+id/season_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:background="#FFF"
+            android:padding="6dp"
+            android:alpha="0.9"
+            android:layout_gravity="center_horizontal|center_vertical"/>
+
+        <TextView
+            android:id="@+id/season_episodes"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:textSize="20sp"
+            android:layout_gravity="bottom|right"
+            android:background="#FFF"
+            android:padding="4dp"
+            android:gravity="center_horizontal|center_vertical"/>
+
+
+    </FrameLayout>
+</android.support.v7.widget.CardView>
