@@ -2,6 +2,7 @@ package com.felix.moviedb.moviedb.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.AbsListView;
 
 import com.felix.moviedb.moviedb.models.Genre;
 import com.google.gson.Gson;
@@ -56,7 +57,9 @@ public class Util {
 
         return genreSharedPreference;
     }
-
-
-
 }
+
+
+
+
+
