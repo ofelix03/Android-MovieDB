@@ -3,23 +3,16 @@ package com.felix.moviedb.moviedb;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 
-//import com.android.volley.Request;
-//import com.android.volley.Response;
-//import com.android.volley.VolleyError;
-//import com.android.volley.toolbox.JsonArrayRequest;
-//import com.android.volley.toolbox.JsonObjectRequest;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -29,23 +22,13 @@ import com.felix.moviedb.moviedb.models.Genre;
 import com.felix.moviedb.moviedb.services.VolleyFactory;
 import com.felix.moviedb.moviedb.utils.Util;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 //import com.felix.moviedb.moviedb.services.VolleyFactory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private String[] tabs = {"MOVIES", "TV SHOWS", "ACTORS"};
     public Toolbar myToolbar;
     public SharedPreferences genreSharedPreference;
+    public ProgressBar progressBar;
 
     private String GENRE_LIST_URL = "https://api.themoviedb.org/3/genre/movie/list?api_key=f54dad4d1c97e5e9713189d86d100bf7&language=en-U";
 
@@ -66,12 +50,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         genreSharedPreference = Util.getGenreSaaredPreference(this);
+        progressBar = (ProgressBar) findViewById(R.id.progressbar);
 
         // Setup toolbar
         myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
-        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager = (ViewPager) findViewById(R.id.person_details_pager);
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
 
         // Setup tabs
@@ -82,20 +67,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = new MenuInflater(context);
-        menuInflater.inflate(R.menu.movie_list_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.movie_list_menu, menu);
+        return true;
     }
 
 
     public void getGenres() {
+        if (genreSharedPreference.getAll() != null) {
+            return;
+        }
 
         final JsonObjectRequest genreListRequest = new JsonObjectRequest(Request.Method.GET, GENRE_LIST_URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.i("response", response.toString());
                 try {
                     JSONArray genres = response.getJSONArray("genres");
 
@@ -136,8 +123,6 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = Util.getGson();
 
         genreSharedPreference.edit().putString(Util.GENRE_LIST_KEY, gson.toJson(genreList, Util.getGenreType())).commit();
-        Log.i("contains", String.valueOf(genreSharedPreference.contains(Util.GENRE_LIST_KEY)));
-        Log.i("pref items", String.valueOf(genreSharedPreference.getAll()));
     }
 
 

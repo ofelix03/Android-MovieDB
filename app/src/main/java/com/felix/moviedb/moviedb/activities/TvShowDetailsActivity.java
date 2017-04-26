@@ -1,6 +1,7 @@
 package com.felix.moviedb.moviedb.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,8 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -24,8 +28,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.felix.moviedb.moviedb.R;
 import com.felix.moviedb.moviedb.adapters.CastRecyclerViewAdapter;
+import com.felix.moviedb.moviedb.adapters.CreatorListAdapter;
 import com.felix.moviedb.moviedb.adapters.SeasonListRecyclerViewAdapter;
 import com.felix.moviedb.moviedb.models.Cast;
+import com.felix.moviedb.moviedb.models.Genre;
 import com.felix.moviedb.moviedb.models.Person;
 import com.felix.moviedb.moviedb.models.Series;
 import com.felix.moviedb.moviedb.models.TvSeason;
@@ -37,7 +43,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class TvShowDetailsActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class TvShowDetailsActivity extends AppCompatActivity implements CastRecyclerViewAdapter.Callback {
     private Context context = this;
     private Toolbar toolbar;
     private CollapsingToolbarLayout collapsingToolbarLayout;
@@ -59,6 +67,8 @@ public class TvShowDetailsActivity extends AppCompatActivity {
     private TextView languageView;
     private RecyclerView seasonListRecyclerView;
     private RecyclerView castRecyclerView;
+    private TextView genreView;
+    private GridView creatorListView;
 
 
     public String  getSeriesDetailsUrl() {
@@ -94,6 +104,9 @@ public class TvShowDetailsActivity extends AppCompatActivity {
         GridLayoutManager castGridLayout =  new GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false);
         castRecyclerView.setLayoutManager(castGridLayout);
 
+        creatorListView = (GridView) findViewById(R.id.creator_list);
+
+
         setTitle("");
 
 
@@ -110,26 +123,58 @@ public class TvShowDetailsActivity extends AppCompatActivity {
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.holo_red_light));
 
 
+
         overviewTextView = (TextView) findViewById(R.id.overview_text);
         overviewTextView.setText(series.getOverview());
 
         languageView = (TextView) findViewById(R.id.language);
         languageView.setText(series.getLanguage());
 
-        ratingView = (TextView) findViewById(R.id.rating);
-        ratingView.setText(series.getRating());
+//        ratingView = (TextView) findViewById(R.id.rating);
+//        ratingView.setText(series.getRating());
 
         statusView = (TextView) findViewById(R.id.status);
         statusView.setText(series.getStatus());
 
-        createdByView = (TextView) findViewById(R.id.created_by);
-        createdByView.setText("Felix Otoo, Samuel Mensah, Henry Crook");
+        genreView = (TextView) findViewById(R.id.genre);
+        String genreString = "";
+        ArrayList<Genre> genres = series.getGenres();
+        for(int i = 0; i < genres.size(); i++) {
+            if (i == genres.size() - 1) {
+                genreString  += genres.get(i).getName();
+            } else {
+                genreString += genres.get(i).getName() + ", ";
+            }
+        }
+
+        genreView.setText(genreString);
+
+//        createdByView = (TextView) findViewById(R.id.created_by);
+//        String creatorsString = "";
+//        ArrayList<Person> creators = series.getCreators();
+//        for(int i = 0; i < creators.size(); i++) {
+//            if (i == creators.size() - 1) {
+//                creatorsString += creators.get(i).getName();
+//            } else {
+//                creatorsString += creators.get(i).getName() + ", ";
+//            }
+//        }
+//        createdByView.setText(creatorsString);
+        CreatorListAdapter creatorListAdapter = new CreatorListAdapter(context, R.layout.creators_viewholder, series.getCreators());
+        creatorListView.setAdapter(creatorListAdapter);
+        creatorListAdapter.notifyDataSetChanged();
+
 
         productionCompaniesView = (TextView) findViewById(R.id.production_companies);
 
         String productionCompanies = "";
-        for(int i = 0; i < series.getProductionCompanies().length; i++) {
-            productionCompanies += series.getProductionCompanies()[i] + " ||  ";
+        String[] productions =  series.getProductionCompanies();
+        for(int i = 0; i < productions.length; i++) {
+            if (i == productions.length - 1) {
+                productionCompanies += productions[i];
+            } else {
+                productionCompanies += productions[i] + ", ";
+            }
         }
         productionCompaniesView.setText(productionCompanies);
 
@@ -154,14 +199,9 @@ public class TvShowDetailsActivity extends AppCompatActivity {
 
 
     public void getTvSeriesDetails() {
-        Log.i("getting", "tv series details now");
-        Log.i("URL", getSeriesDetailsUrl());
-
         JsonObjectRequest tvSeriesDetailsRequest = new JsonObjectRequest(getSeriesDetailsUrl(), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.i("response", response.toString());
-
                 try {
                     series.setPoster(response.getString("backdrop_path"));
                     series.setLanguage(response.getString("original_language"));
@@ -170,6 +210,29 @@ public class TvShowDetailsActivity extends AppCompatActivity {
                     series.setStatus(response.getString("status"));
                     series.setOverview(response.getString("overview"));
                     series.setId(response.getInt("id"));
+
+                    JSONArray genreArray = response.getJSONArray("genres");
+                    for(int i = 0; i < genreArray.length(); i++) {
+                        JSONObject genreObject = genreArray.getJSONObject(i);
+                        Genre genre = new Genre(genreObject.getInt("id"), genreObject.getString("name"));
+                        series.addGenre(genre);
+                    }
+
+                    JSONArray creatorsArray = response.getJSONArray("created_by");
+                    int id;
+                    String name, avatar;
+//                    ArrayList<Person> creatorList = new ArrayList<>();
+
+                    for(int i = 0; i < creatorsArray.length(); i++) {
+                       JSONObject creatorObject = creatorsArray.getJSONObject(i);
+                        id = creatorObject.getInt("id");
+                        name = creatorObject.getString("name");
+                        avatar = creatorObject.getString("profile_path");
+
+//                        creatorList.add(new Person(id, name, null, avatar));
+
+                        series.addCreator(new Person(id, name, null, avatar));
+                    }
 
                     JSONArray seasons = response.getJSONArray("seasons");
                     for(int i = 0; i < seasons.length(); i++) {
@@ -186,16 +249,7 @@ public class TvShowDetailsActivity extends AppCompatActivity {
                     }
 
                     series.setProductionCompanies(productionCompanies);
-
-                    Log.i("language", series.getLanguage());
-                    Log.i("poster", series.getPoster());
-                    Log.i("title", series.getTitle());
-                    Log.i("size", String.valueOf(series.getSeasonCount()));
-
-
                     setUpView(series);
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -216,7 +270,6 @@ public class TvShowDetailsActivity extends AppCompatActivity {
         JsonObjectRequest castRequest = new JsonObjectRequest(getSeriesCastUrl(), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.i("cast response", response.toString());
                 try {
                     JSONArray castArray = response.getJSONArray("cast");
                     String actor_name, actor_avatar, actor_character;
@@ -237,7 +290,7 @@ public class TvShowDetailsActivity extends AppCompatActivity {
                         series.setCast(cast);
                     }
 
-                    CastRecyclerViewAdapter castRecyclerViewAdapter = new CastRecyclerViewAdapter(context, cast);
+                    CastRecyclerViewAdapter castRecyclerViewAdapter = new CastRecyclerViewAdapter(context, cast, context);
                     castRecyclerView.setAdapter(castRecyclerViewAdapter);
                     castRecyclerViewAdapter.notifyDataSetChanged();
 
@@ -260,5 +313,13 @@ public class TvShowDetailsActivity extends AppCompatActivity {
         MenuInflater menuInflater = new MenuInflater(context);
         menuInflater.inflate(R.menu.movie_list_menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void onCastClick(int castId) {
+        Log.i("onCastClick", "called with cast id " + String.valueOf(castId));
+        Intent intent = new Intent(this, PersonDetails2Activity.class);
+        intent.putExtra("personId", castId);
+        startActivity(intent);
     }
 }

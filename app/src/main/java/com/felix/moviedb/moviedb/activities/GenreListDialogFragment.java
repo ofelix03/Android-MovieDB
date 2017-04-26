@@ -73,7 +73,6 @@ public class GenreListDialogFragment extends DialogFragment{
                 .setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.i("item clicked", "item has position = " + i);
                         callbacks.onGenreSelected(genreList.get(i).getId());
                     }
                 }).create();

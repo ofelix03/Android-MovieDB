@@ -4,23 +4,20 @@ package com.felix.moviedb.moviedb.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.felix.moviedb.moviedb.R;
-import com.felix.moviedb.moviedb.adapters.MovieRecyclerViewAdapter;
 import com.felix.moviedb.moviedb.adapters.TvShowRecyclerViewAdapter;
+import com.felix.moviedb.moviedb.interfaces.MovieViewHolderCallback;
 import com.felix.moviedb.moviedb.models.Movie;
 import com.felix.moviedb.moviedb.services.VolleyFactory;
 
@@ -38,11 +35,9 @@ public class TvShowFragment extends Fragment {
     private String TV_SHOWS_URL = "https://api.themoviedb.org/3/tv/popular?api_key=f54dad4d1c97e5e9713189d86d100bf7&language=en-US&page=1";
     private int currentPage = 1;
 
-    private TvShowRecyclerViewAdapter.MovieViewHolderCallbacks  movieViewHolderCallbacks = new TvShowRecyclerViewAdapter.MovieViewHolderCallbacks() {
+    private MovieViewHolderCallback movieViewHolderCallback = new MovieViewHolderCallback() {
         @Override
         public void onImageClick(View view, int tvId) {
-            Log.i("felixclicked", "felix clicked");
-            Log.i("tvID", String.valueOf(tvId));
             Intent tvShowDetailsIntent = new Intent(getActivity(), TvShowDetailsActivity.class);
             tvShowDetailsIntent.putExtra("tvId", tvId);
             startActivity(tvShowDetailsIntent);
@@ -58,7 +53,6 @@ public class TvShowFragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt("position", position);
         fragment.setArguments(args);
-        Log.i("starting", "tv show fragment");
         return fragment;
     }
 
@@ -83,20 +77,17 @@ public class TvShowFragment extends Fragment {
         tvShowRecyclerView.setHasFixedSize(true);
         tvShowRecyclerView.setNestedScrollingEnabled(false);
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         tvShowRecyclerView.setLayoutManager(staggeredGridLayoutManager);
-
 
         return view;
     }
 
     public void getTvShows() {
         Log.i("getting", "tv show now");
-
         final JsonObjectRequest tvShowsRequest = new JsonObjectRequest(Request.Method.GET, TV_SHOWS_URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.i("response", response.toString());
                 int page = 0;
                 try {
                     currentPage = response.getInt("page");
@@ -117,17 +108,12 @@ public class TvShowFragment extends Fragment {
 
                         tvShows.add(new Movie(id, image, title, rating, releaseDate));
                     }
-
-                    Log.i("tvshows", tvShows.toString());
-
-                    Log.i("page", String.valueOf(page));
-                    Log.i("tv shows", results.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
                 TvShowRecyclerViewAdapter tvShowAdapter= new TvShowRecyclerViewAdapter(getContext(), tvShows);
-                tvShowAdapter.setMovieViewHolderCallbacks(movieViewHolderCallbacks);
+                tvShowAdapter.setMovieViewHolderCallback(movieViewHolderCallback);
                 tvShowRecyclerView.setAdapter(tvShowAdapter);
                 tvShowAdapter.notifyDataSetChanged();
 
