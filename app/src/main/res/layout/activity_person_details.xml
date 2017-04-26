@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/activity_person_details"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.felix.moviedb.moviedb.activities.PersonDetails"
+        android:padding="10dp">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/person_details_pager"
+            android:background="@color/colorAccent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:background="@color/cardview_light_background">
+            <ImageView
+                android:id="@+id/person_details_avatar"
+                android:layout_width="180dp"
+                android:layout_height="250dp"
+                android:layout_alignParentLeft="true"
+                android:background="@color/colorAccent"
+                android:layout_marginRight="10dp"
+                />
+
+            <!-- person name -->
+            <TextView
+                android:id="@+id/person_details_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/person_details_avatar"
+                android:text="Felix Otoo"
+                android:textSize="20sp"
+                android:textColor="#111"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                />
+
+            <!-- persond date of birth -->
+            <TextView
+                android:id="@+id/person_details_birthdate_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/person_details_name"
+                android:layout_toRightOf="@id/person_details_avatar"
+                android:text="Born:"
+                android:textSize="14sp"
+                android:textColor="#111"
+                android:textStyle="bold"
+                android:layout_marginRight="2dp"
+                />
+            <TextView
+                android:id="@+id/person_details_birthdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/person_details_birthdate_label"
+                android:layout_below="@id/person_details_name"
+                android:text="19th May 1992"
+                android:textSize="14dp"
+                />
+
+            <!-- person place of birth -->
+            <TextView
+                android:id="@+id/person_details_birthplace_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/person_details_birthdate"
+                android:layout_toRightOf="@id/person_details_avatar"
+                android:text="Born:"
+                android:textSize="14sp"
+                android:textColor="#111"
+                android:textStyle="bold"
+                android:layout_marginRight="2dp"
+                />
+            <TextView
+                android:id="@+id/person_details_birthplace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/person_details_birthdate_label"
+                android:layout_below="@id/person_details_birthdate"
+                android:text="Accra, Ghana"
+                android:textSize="14dp"
+                />
+            <!-- persond date of death -->
+            <TextView
+                android:id="@+id/person_details_deathdate_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/person_details_birthplace_label"
+                android:layout_toRightOf="@id/person_details_avatar"
+                android:text="Died:"
+                android:textSize="14sp"
+                android:textColor="#111"
+                android:textStyle="bold"
+                android:layout_marginRight="2dp"
+                />
+            <TextView
+                android:id="@+id/person_details_deathdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/person_details_deathdate_label"
+                android:layout_below="@id/person_details_birthplace_label"
+                android:text="19th May 1992"
+                android:textSize="14dp"
+                />
+
+        </RelativeLayout>
+
+        <!-- Bio -->
+        <TextView
+            android:id="@+id/person_details_bio_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="Bio"/>
+        <TextView
+            android:id="@+id/person_details_bio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Henry William Dalgliesh Cavill (born 5 May 1983) is a British actor. He has appeared in the films The Count of Monte Cristo and Stardust, and played the role of Charles Brandon, 1st Duke of Suffolk, on the Showtime series The Tudors, from 2007 until 2010. He has been cast as Superman in the 2012 film Man of Steel.\n\nDescription above from the Wikipedia article Henry Cavill, licensed under CC-BY-SA, full list of contributors on Wikipedia."/>
+
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

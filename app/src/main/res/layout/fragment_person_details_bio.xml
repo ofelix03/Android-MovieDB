@@ -1,0 +1,14 @@
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.felix.moviedb.moviedb.activities.PersonDetailsBioFragment"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/person_details_bio"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</android.support.v4.widget.NestedScrollView>

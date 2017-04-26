@@ -2,23 +2,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="300dp"
     android:layout_height="120dp"
-    android:layout_margin="1dp">
+    android:layout_margin="1dp"
+    android:background="?android:selectableItemBackground"
+    android:clickable="true"
+    android:id="@+id/person_container">
 
     <ImageView
-        android:id="@+id/person_avatar"
+        android:id="@+id/person_details_avatar"
         android:layout_width="80dp"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:scaleType="fitXY"
         android:layout_marginRight="4dp"
-        android:layout_marginLeft="6dp"/>
+        android:layout_marginLeft="6dp"
+        />
 
     <TextView
-        android:id="@+id/person_name"
+        android:id="@+id/person_details_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/person_avatar"
+        android:layout_toRightOf="@id/person_details_avatar"
         android:textSize="16sp"
         android:textStyle="bold"/>
 
@@ -27,8 +31,8 @@
         android:id="@+id/person_character"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/person_avatar"
-        android:layout_below="@id/person_name"
+        android:layout_toRightOf="@id/person_details_avatar"
+        android:layout_below="@id/person_details_name"
         android:textStyle="italic"
         />
 

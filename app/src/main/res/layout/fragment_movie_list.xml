@@ -14,26 +14,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            >
+            android:background="#ddd">
             <TextView
                 android:text="UPCOMING"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:layout_gravity="top"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#111"
                 android:gravity="left|center_vertical"
+                android:textStyle="bold"
                 />
 
             <TextView
                 android:text="MORE"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#111"
+                android:textColor="#444"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:paddingTop="5dp"
+                android:paddingTop="2dp"
                 android:paddingRight="5dp"
                 />
         </RelativeLayout>
@@ -47,26 +48,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            >
+            android:background="#ddd">
             <TextView
                 android:text="POPULAR"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:layout_gravity="top"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#111"
                 android:gravity="left|center_vertical"
+                android:textStyle="bold"
                 />
 
             <TextView
                 android:text="MORE"
-                android:textSize="16sp"
+                android:textSize="13sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#111"
+                android:textColor="#444"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:paddingTop="5dp"
+                android:paddingTop="2dp"
                 android:paddingRight="5dp"
                 />
         </RelativeLayout>
@@ -74,18 +76,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/movie_list_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />d
+            android:layout_height="match_parent" />
 
-        <Button
-            android:background="@color/cardview_dark_background"
-            android:textColor="#FFF"
-            android:id="@+id/load_more"
-            android:text="LOAD MORE"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
-            android:onClick=""
-            android:visibility="gone"/>
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>
