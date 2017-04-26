@@ -1,18 +1,16 @@
 package com.felix.moviedb.moviedb.adapters;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.felix.moviedb.moviedb.R;
+import com.felix.moviedb.moviedb.interfaces.MovieViewHolderCallback;
 import com.felix.moviedb.moviedb.models.Movie;
 import com.felix.moviedb.moviedb.services.VolleyFactory;
 
@@ -26,7 +24,7 @@ import java.util.ArrayList;
 public class TvShowRecyclerViewAdapter extends RecyclerView.Adapter<TvShowRecyclerViewAdapter.MovieViewHolder>{
     private ArrayList<Movie> movies;
     private Context context;
-    private MovieViewHolderCallbacks movieViewHolderCallbacks;
+    private MovieViewHolderCallback movieViewHolderCallback;
 
 
 
@@ -36,8 +34,8 @@ public class TvShowRecyclerViewAdapter extends RecyclerView.Adapter<TvShowRecycl
 
     }
 
-    public void setMovieViewHolderCallbacks(MovieViewHolderCallbacks callbacks) {
-        movieViewHolderCallbacks = callbacks;
+    public void setMovieViewHolderCallback(MovieViewHolderCallback callbacks) {
+        movieViewHolderCallback = callbacks;
     }
 
 
@@ -55,14 +53,14 @@ public class TvShowRecyclerViewAdapter extends RecyclerView.Adapter<TvShowRecycl
 
         holder.imageView.setImageUrl(movie.getImage(), VolleyFactory.getInstance(context).getImageLoader());
         holder.titleView.setText(movie.getTitle());
-        holder.ratingView.setText(movie.getRating());
+//        holder.ratingView.setText(movie.getRating());
         holder.releaseDateView.setText(movie.getReleaseDate());
 
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i("imageclicked", "Image has been clicked");
-                movieViewHolderCallbacks.onImageClick(view, movie.getId());
+                movieViewHolderCallback.onImageClick(view, movie.getId());
             }
         });
 
@@ -84,13 +82,9 @@ public class TvShowRecyclerViewAdapter extends RecyclerView.Adapter<TvShowRecycl
             super(itemView);
             imageView = (NetworkImageView) itemView.findViewById(R.id.movie_image);
             titleView = (TextView) itemView.findViewById(R.id.movie_title);
-            ratingView = (TextView) itemView.findViewById((R.id.movie_rating));
+//            ratingView = (TextView) itemView.findViewById((R.id.movie_rating));
             releaseDateView = (TextView) itemView.findViewById((R.id.movie_release_date));
         }
-    }
-
-    public interface  MovieViewHolderCallbacks {
-        public void onImageClick(View view, int tvId);
     }
 
 

@@ -2,12 +2,12 @@ package com.felix.moviedb.moviedb.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -25,10 +25,16 @@ import com.felix.moviedb.moviedb.utils.TheMovieDBUtil;
 public class CastRecyclerViewAdapter extends RecyclerView.Adapter<CastRecyclerViewAdapter.CastViewHolder> {
     private Cast cast;
     private Context context;
+    private Callback callback;
 
-    public CastRecyclerViewAdapter(Context context, Cast cast) {
+    public CastRecyclerViewAdapter(Context context, Cast cast, Object callback) {
         this.cast = cast;
         this.context = context;
+        this.callback = (Callback) callback;
+    }
+
+    public void setCallback(Object callback) {
+        this.callback = (Callback) callback;
     }
 
     @Override
@@ -40,7 +46,7 @@ public class CastRecyclerViewAdapter extends RecyclerView.Adapter<CastRecyclerVi
 
     @Override
     public void onBindViewHolder(final CastViewHolder holder, int position) {
-        Person actor = cast.getCast().get(position);
+        final Person actor = cast.getCast().get(position);
 
         holder.nameView.setText(actor.getName());
         holder.characterView.setText("(" + actor.getCharacter() + ")");
@@ -57,6 +63,14 @@ public class CastRecyclerViewAdapter extends RecyclerView.Adapter<CastRecyclerVi
                 Log.i("actor image", error.toString());
             }
         });
+
+        holder.castContainerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("castclicked", "cast item clicked");
+                callback.onCastClick(actor.getId());
+            }
+        });
     }
 
     @Override
@@ -66,6 +80,7 @@ public class CastRecyclerViewAdapter extends RecyclerView.Adapter<CastRecyclerVi
 
     class CastViewHolder extends RecyclerView.ViewHolder {
 
+        public RelativeLayout castContainerView;
         public TextView nameView;
         public ImageView avatarView;
         public TextView characterView;
@@ -73,9 +88,14 @@ public class CastRecyclerViewAdapter extends RecyclerView.Adapter<CastRecyclerVi
         public CastViewHolder(View itemView) {
             super(itemView);
 
-            nameView = (TextView) itemView.findViewById(R.id.person_name);
-            avatarView = (ImageView) itemView.findViewById(R.id.person_avatar);
+            castContainerView = (RelativeLayout) itemView.findViewById(R.id.person_container);
+            nameView = (TextView) itemView.findViewById(R.id.person_details_name);
+            avatarView = (ImageView) itemView.findViewById(R.id.person_details_avatar);
             characterView = (TextView) itemView.findViewById(R.id.person_character);
         }
+    }
+
+    public interface Callback {
+        public void onCastClick(int castId);
     }
 }

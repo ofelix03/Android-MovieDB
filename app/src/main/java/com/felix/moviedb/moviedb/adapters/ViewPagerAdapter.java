@@ -33,14 +33,11 @@ public class ViewPagerAdapter  extends FragmentStatePagerAdapter {
             frag = MovieListFragment.newInstance(position);
         } else if (position == 1) {
             Log.i("pos", "tv show");
-//            frag = MovieListFragment.newInstance(position);
             frag =  TvShowFragment.newInstance(position);
         } else if (position == 2) {
             Log.i("post", "2");
-            frag = MovieListFragment.newInstance(position);
-//            frag =  PersonFragment.newInstance(position);
+            frag = PersonFragment.newInstance(position);
         }
-
         return frag;
     }
 
@@ -53,4 +50,5 @@ public class ViewPagerAdapter  extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         return tabs[position];
     }
+
 }
