@@ -1,12 +1,13 @@
 package com.felix.moviedb.moviedb.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by felix on 1/16/17.
  */
 
-public class Cast {
+public class Cast  implements Serializable {
     private ArrayList<Person> cast = new ArrayList<>();
 
 

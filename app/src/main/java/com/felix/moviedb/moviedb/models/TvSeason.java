@@ -1,10 +1,12 @@
 package com.felix.moviedb.moviedb.models;
 
+import java.io.Serializable;
+
 /**
  * Created by felix on 1/16/17.
  */
 
-public class TvSeason {
+public class TvSeason implements Serializable {
 
     private int number;
     private int episodes;

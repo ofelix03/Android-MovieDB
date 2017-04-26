@@ -1,10 +1,12 @@
 package com.felix.moviedb.moviedb.models;
 
+import java.io.Serializable;
+
 /**
  * Created by felix on 1/14/17.
  */
 
-public class Genre {
+public class Genre implements Serializable {
     private int id;
     private String name;
 

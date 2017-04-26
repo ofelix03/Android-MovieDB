@@ -1,5 +1,6 @@
 package com.felix.moviedb.moviedb.models;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -7,19 +8,21 @@ import java.util.ArrayList;
  * Created by felix on 1/16/17.
  */
 
-public class Series {
+public class Series implements Serializable{
 
     private ArrayList<TvSeason> series = new ArrayList<>();
+    private int id;
     private String title;
     private String status;
     private String rating;
     private String language;
     private int seasons; // number of
+    private ArrayList<Person> creators = new ArrayList<>();
     private String poster;
     private String[] productionCompanies = {};
     private String overview;
-    private int id;
     private Cast cast = new Cast();
+    private ArrayList<Genre> genres = new ArrayList<>();
 
 
     public Series() {
@@ -130,4 +133,31 @@ public class Series {
         this.cast = cast;
     }
 
+    public ArrayList<Person> getCreators() {
+        return creators;
+    }
+
+    public int getCreatorsCount() {
+        return creators.size();
+    }
+
+    public void setCreators(ArrayList<Person> creators) {
+        this.creators = creators;
+    }
+
+    public void addCreator(Person person) {
+        creators.add(person);
+    }
+
+    public ArrayList<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(ArrayList<Genre> genres) {
+        this.genres = genres;
+    }
+
+    public void addGenre(Genre genre){
+        genres.add(genre);
+    }
 }
